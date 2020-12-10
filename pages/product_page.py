@@ -26,3 +26,9 @@ class ProductPage(BasePage):
         product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE)
         alert_price = self.browser.find_element(*ProductPageLocators.PRODUCT_BUY_ALERT_PRICE)
         assert product_price.text == alert_price.text, "Цена в сообщении не соответствует той, что на странице"
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is presented, but should not be"
+
+    def should_hide_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is not hide after some seconds"
