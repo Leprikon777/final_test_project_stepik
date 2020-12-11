@@ -3,6 +3,7 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from .locators import BasePageLocators
 import math
 from selenium import webdriver
 
@@ -16,10 +17,19 @@ class BasePage():
 #Методы открытия/закрытия браузера на нужной странице
     def open(self):
         self.browser.get(self.url)
-
     def close(self):
         self.browser.implicitly_wait(5)
         self.browser.quit()
+
+
+    #переносим в BasePage методы перехода на страницу логина
+    def go_to_login_page(self):
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        link.click()
+    def should_be_login_link(self):
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not present"
+
+
 
 #Проверка на наличие элемента
     def is_element_present(self, how, what):
@@ -42,6 +52,7 @@ class BasePage():
         except TimeoutException:
             return False
         return True
+
 
 
 #Урок 4.3 шаг 2 написать правильный ответ в алерте, чтобы добавить товар в корзину
