@@ -3,11 +3,17 @@ from selenium.webdriver.common.by import By
 class BasePageLocators():
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
     LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
 
 class LoginPageLocators():
     LOGIN_FORM = (By.CSS_SELECTOR, "#login_form")    #форма логина
     REGISTER_FORM = (By.CSS_SELECTOR, "#register_form")   #форма регистрации
+
+    EMAIL_REGISTER_INPUT = (By.CSS_SELECTOR, "#id_registration-email") #поле почты
+    PASSWORD1_REGISTER_INPUT = (By.CSS_SELECTOR, "#id_registration-password1")
+    PASSWORD2_REGISTER_INPUT = (By.CSS_SELECTOR, "#id_registration-password2")
+    REGISTER_BUTTON = (By.NAME, "registration_submit")
 
 
 class ProductPageLocators():
