@@ -7,14 +7,10 @@ class ProductPage(BasePage):
         busket_button.click()
 
     def product_message_is_correct(self):
-        try:
-            self.name_is_correct()
-        finally:
-            print("тест 1 выполнен")
-            try:
-                self.price_is_correct()
-            finally:
-                print("тест 2 выполнен")
+        self.name_is_correct()
+        self.price_is_correct()
+
+
 
 
     def name_is_correct(self):
