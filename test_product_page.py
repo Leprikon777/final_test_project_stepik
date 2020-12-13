@@ -18,14 +18,14 @@ import time
                                       marks=pytest.mark.xfail),
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"])
-@pytest.mark.need_review
-def test_guest_can_add_product_to_basket(browser, link):
+def test_guest_can_add_product_to_basket_parametrize(browser, link):
     page = ProductPage(browser, link)
     page.open()
     page.add_product_to_basket()
     page.solve_quiz_and_get_code()
-    # time.sleep(60)
     page.product_message_is_correct()
+
+
 
 
 # Отрицательные проверки сообщения об успешном добавлении
@@ -46,14 +46,6 @@ def test_guest_cant_see_success_message(browser):
     page.open()
     page.should_not_be_success_message()
 
-@pytest.mark.need_review
-def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
-    page = ProductPage(browser, link)
-    page.open()
-    page.go_to_basket()
-    basket_page = BasketPage(browser, browser.current_url)
-    basket_page.should_be_basket_page()
-
 
 @pytest.mark.xfail(reason="На сайте нет функционала скрытия сообщения о покупке")
 def test_message_disappeared_after_adding_product_to_basket(browser):
@@ -71,15 +63,6 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.open()
     page.should_be_login_link()
 
-@pytest.mark.need_review
-def test_guest_can_go_to_login_page_from_product_page(browser):
-    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
-    page = ProductPage(browser, link)
-    page.open()
-    page.go_to_login_page()
-    login_page = LoginPage(browser, browser.current_url)
-    login_page.should_be_login_page()
-
 @pytest.fixture()
 def setup(browser):
     link = "http://selenium1py.pythonanywhere.com/ru/accounts/login/"
@@ -93,15 +76,6 @@ def setup(browser):
     #Проверяем что мы авторизованы
     page.should_be_authorized_user()
 
-@pytest.mark.need_review
-def test_user_can_add_product_to_basket(browser, setup):
-    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
-    page = ProductPage(browser, link)
-    page.open()
-    page.add_product_to_basket()
-    page.solve_quiz_and_get_code()
-    # time.sleep(60)
-    page.product_message_is_correct()
 @pytest.mark.xfail
 def test_user_cant_see_success_message_after_adding_product_to_basket(browser, setup):
     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
@@ -110,5 +84,42 @@ def test_user_cant_see_success_message_after_adding_product_to_basket(browser, s
     page.add_product_to_basket()
     page.solve_quiz_and_get_code()
     page.should_not_be_success_message()
-#class TestUserAddToBasketFromProductPage(ProductPage):
+
+#Тесты для ревью на степик:
+@pytest.mark.need_review    #регистрируем пользователя через setup и добавляем продукт
+def test_user_can_add_product_to_basket(browser, setup):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+    page = ProductPage(browser, link)
+    page.open()
+    page.add_product_to_basket()
+    page.solve_quiz_and_get_code()
+    page.product_message_is_correct()
+
+@pytest.mark.need_review    #добавление гостем продукта в корзину
+def test_guest_can_add_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+    page = ProductPage(browser, link)
+    page.open()
+    page.add_product_to_basket()
+    page.solve_quiz_and_get_code()
+    page.product_message_is_correct()
+
+@pytest.mark.need_review    #Не добавляем продукт в корзине и проверяем что его там нет
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    page = ProductPage(browser, link)
+    page.open()
+    page.go_to_basket()
+    basket_page = BasketPage(browser, browser.current_url)
+    basket_page.should_be_basket_page()
+
+@pytest.mark.need_review    #можем перейти на страницу логина со страницы продукта
+def test_guest_can_go_to_login_page_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.go_to_login_page()
+    login_page = LoginPage(browser, browser.current_url)
+    login_page.should_be_login_page()
+
+
 

@@ -22,18 +22,19 @@ class BasePage():
         self.browser.quit()
 
 
-    #переносим в BasePage методы перехода на страницу логина
+#переносим в BasePage методы перехода на страницу логина
     def go_to_login_page(self):
         link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         link.click()
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not present"
 
-    #Метод перехода в корзину
+#Метод перехода в корзину
     def go_to_basket(self):
         basket = self.browser.find_element(*BasePageLocators.BUTTON_GO_TO_BASKET)
         basket.click()
 
+#Проверка, что пользователь авторизован
     def should_be_authorized_user(self):
         assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented, probably unauthorised user"
 
